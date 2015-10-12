@@ -3,8 +3,7 @@
 {% block title %}Association Zhong Fu{% endblock %}
 
  {% block leftbar %}
-   <div class=" col-sm-12 col-md-6 col-lg-6">
-     <div class="row">
+
        <div class="leftbar_content">
          <h2>Dernier articles</h2>
          {% block singleStufPost %}
@@ -31,13 +30,11 @@
              {% endfor %}
          {% endblock singleStufPost %}
        </div>
-     </div>
-   </div>
+
  {% endblock leftbar %}
 
  {% block middlebar %}
-   <div class="col-sm-6 col-md-2 col-lg-2">
-     <div class="row">
+
        <div class="middlebar_content">
          <h2 class="yellow_bg">En Vedette</h2>
 
@@ -64,7 +61,7 @@
 
          <div class="middlebar_content_inner wow fadeInUp">
            <ul class="middlebar_nav">
-               <li>
+               <li class="poeme-content">
                  <p>{{ poeme.contenu|raw }}</p>
                  <em>{{ poeme.auteur }} {{ poeme.date|localizeddate('medium', 'none', global_locale ) }}</em>
                </li>
@@ -72,8 +69,7 @@
          </div>
 
        </div>
-     </div>
-   </div>
+
  {% endblock middlebar %}
 
   {% block evenements %}

@@ -1,0 +1,40 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+{% block jsmanuel %}
+{% endblock %}
+{% block content %}
+
+    <h1>Liste des Poemes</h1>
+    <div class="admin-control-list-panel">
+        <a href="{{ path('_adminIndex') }}" class="btn btn-default" role="button">Index Administration</a>
+        <a href="{{ path('_addPoeme') }}" class="btn btn-primary" role="button">Ajouter un Poeme</a>
+    </div>
+    <br>
+    <br>
+    <table class="table">
+        <tr>
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Auteur</th>
+            <th>Actions</th>
+        </tr>
+        {% for poeme in poemes %}
+            <tr>
+                <td>{{ poeme.titre }}</td>
+                <td>{{ poeme.date|localizeddate('short', 'none', global_locale ) }}</td>
+                <td>{{ poeme.auteur }}</td>
+                <td class="vert-align" style="min-width: 450px;">
+                    <a class="btn btn-info btn-xs" role="button" href="{{ path('_poemeModify',{'id': poeme.id}) }}">Modifier
+                        le poeme</a>
+                    <a class="btn btn-danger btn-xs" role="button"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce poeme?');"
+                       href="{{ path('_deletePoeme',{'id': poeme.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+

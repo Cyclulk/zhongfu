@@ -23,7 +23,7 @@
     {% for evenement in evenements %}
                 <tr>
                     <td>{{ evenement.titre }}</td>
-                    <td>{{ evenement.slug}}</td>
+                    <td>{{ evenement.slug|slice(1, 30)}}...</td>
                     <td>{{ evenement.type.name }}</td>
                     <td>{{ evenement.date|localizeddate('short', 'none', global_locale ) }}</td>
                     <td>{% if evenement.avatar is null %}pas d'image{% else %}<img style="max-height: 50px" src="{{ asset(evenement.avatar.url) }}">{% endif %}</td>

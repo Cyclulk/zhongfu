@@ -218,15 +218,11 @@ class DefaultController extends Controller
     public function getPoeme(){
 
         $oEntityManager = $this->getDoctrine()->getManager();
-                //Count of poeme in the database
-        $query = $oEntityManager->createQuery('
-        SELECT COUNT(p.id) FROM ZhongfuBlogBundle:Poeme p');
-        $iPoemeCount = $query->getSingleResult();
-
         $oPoemeManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Poeme');
-        $iIdOfSelectedPoeme = rand(1,intval($iPoemeCount));
-        $oPoemeSelected = $oPoemeManager->find($iIdOfSelectedPoeme);
 
-        return $oPoemeSelected;
+        $aPoemes = $oPoemeManager->findAll();
+        $iKeyOfSelectedPoeme = rand(0,count($aPoemes)-1);
+
+        return $aPoemes[$iKeyOfSelectedPoeme];
     }
 }

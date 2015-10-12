@@ -22,7 +22,7 @@
         {% for article in articles %}
             <tr>
                 <td>{{ article.titre }}</td>
-                <td>{{ article.slug }}</td>
+                <td>{{ article.slug|slice(1, 30) }}...</td>
                 <td>{{ article.type.name }}</td>
                 <td>{{ article.date|localizeddate('short', 'none', global_locale ) }}</td>
                 <td>{% if article.avatar is null %}pas d'image{% else %}<img style="max-height: 50px"

@@ -1,0 +1,53 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block jsmanuel %}
+    <script type="text/javascript" src="{{ asset('js/tinymce4/tinymce.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Ajouer un Poeme</h2>
+
+    <div class="well-lg">
+        <div class="form-group">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            {{ form_label(form.titre,"Titre :") }}
+            {{ form_widget(form.titre) }}
+            <div class="alert-danger">
+                {{ form_errors(form.titre) }}
+            </div>
+
+            {{ form_label(form.contenu,"Contenu :") }}
+            {{ form_widget(form.contenu ,{'attr':{'class':'wysiwyg'}}) }}
+            <div class="alert-danger">
+                {{ form_errors(form.contenu) }}
+            </div>
+
+            {{ form_label(form.date,"Date :") }}
+            {{ form_widget(form.date) }}
+            <div class="alert-danger">
+                {{ form_errors(form.date) }}
+            </div>
+
+            {{ form_label(form.auteur,"Auteur :") }}
+            {{ form_widget(form.auteur) }}
+            <div class="alert-danger">
+                {{ form_errors(form.auteur) }}
+            </div>
+
+        </div>
+        <br>
+
+        {{ form_widget(form.save,{'attr':{'class': 'btn btn-primary'},'label':'Sauvegarder'}) }}
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

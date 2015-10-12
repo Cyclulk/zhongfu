@@ -108,26 +108,28 @@ class AdminEvenementController extends Controller
         /**
          * @var $oEvenement Evenement
          */
-        foreach ($oEvenement->getImagesList() as $oImage) {
+        if ($oEvenement->getAvatar()) {
+            foreach ($oEvenement->getImagesList() as $oImage) {
 
-            if (file_exists($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/' . $oImage->getFile())) {
-                unlink($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/' . $oImage->getFile());
+                if (file_exists($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/' . $oImage->getFile())) {
+                    unlink($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/' . $oImage->getFile());
+                }
+                if (file_exists($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/mini_' . $oImage->getFile())) {
+                    unlink($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/mini_' . $oImage->getFile());
+                }
+                $oEntityManager->remove($oImage);
+            }
+            //and the avatar
+            if (file_exists($this->container->getParameter('upload_base_dir') . $oEvenement->getAvatar()->getPath() . '/' . $oImage->getFile())) {
+                unlink($this->container->getParameter('upload_base_dir') . $oEvenement->getAvatar()->getPath() . '/' . $oImage->getFile());
             }
             if (file_exists($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/mini_' . $oImage->getFile())) {
                 unlink($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/mini_' . $oImage->getFile());
             }
+
+            rmdir($this->container->getParameter('upload_base_dir') . $oImage->getPath());
             $oEntityManager->remove($oImage);
         }
-        //and the avatar
-        if (file_exists($this->container->getParameter('upload_base_dir') . $oEvenement->getAvatar()->getPath() . '/' . $oImage->getFile())) {
-            unlink($this->container->getParameter('upload_base_dir') . $oEvenement->getAvatar()->getPath() . '/' . $oImage->getFile());
-        }
-        if (file_exists($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/mini_' . $oImage->getFile())) {
-            unlink($this->container->getParameter('upload_base_dir') . $oImage->getPath() . '/mini_' . $oImage->getFile());
-        }
-
-        rmdir($this->container->getParameter('upload_base_dir') . $oImage->getPath());
-        $oEntityManager->remove($oImage);
 
         //delete the pdf
         if ($oEvenement->getFormSeminarFile()) {
