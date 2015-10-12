@@ -23,7 +23,7 @@ class DefaultController extends Controller
         $oArticleManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Article');
         $aArticles = $oArticleManager->findBy(array(), array('date'=>'desc'), $iLimitArticles, 0);
 
-        $query = $oEntityManager->createQuery('SELECT e FROM ZhongfuBlogBundle:Evenement e WHERE e.date > CURRENT_DATE()');
+        $query = $oEntityManager->createQuery('SELECT e FROM ZhongfuBlogBundle:Evenement e WHERE e.date > CURRENT_DATE() ORDER BY e.date ');
         $aEvenements = $query->getResult();
 
         $oPoemeSelected = $this->getPoeme();
