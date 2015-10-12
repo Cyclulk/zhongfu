@@ -1,0 +1,4 @@
+zhongfu_media_manager_homepage:
+     resource: "@ZhongfuMediaManagerBundle/Controller"
+     type: annotation
+

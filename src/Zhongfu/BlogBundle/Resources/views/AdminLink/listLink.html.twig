@@ -1,0 +1,42 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+{% block jsmanuel %}
+{% endblock %}
+{% block content %}
+
+    <h1>Liste des Articles</h1>
+    <div class="admin-control-list-panel">
+        <a href="{{ path('_adminIndex') }}" class="btn btn-default" role="button">Index Administration</a>
+        <a href="{{ path('_addLink') }}" class="btn btn-primary" role="button">Ajouter un Lien</a>
+    </div>
+    <br>
+    <br>
+    <table class="table">
+        <tr>
+            <th>Nom</th>
+            <th>Adresse</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        {% for link in links %}
+            <tr>
+                <td>{{ link.name }}</td>
+                <td>{{ link.url }}</td>
+                <td>{{ link.description }}</td>
+                <td class="vert-align" style="min-width: 450px;">
+                    <a class="btn btn-primary btn-xs" role="button" href="{{ link.url }}">Visiter
+                        le lien</a>
+                    <a class="btn btn-info btn-xs" role="button" href="{{ path('_linkModify',{'id': link.id}) }}">Modifier
+                        le lien</a>
+                    <a class="btn btn-danger btn-xs" role="button"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce lien?');"
+                       href="{{ path('_deleteLink',{'id': link.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+

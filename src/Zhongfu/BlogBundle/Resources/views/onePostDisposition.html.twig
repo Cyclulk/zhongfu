@@ -1,0 +1,42 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block content %}
+<section id="contentbody">
+  <div class="container">
+    <div class="row">
+      <!-- start left bar content -->
+      {% block leftbar %}
+      <div class=" col-sm-12 col-md-6 col-lg-6">
+        <div class="row">
+          <div class="leftbar_content">
+            {% block post %}
+            {% endblock post %}
+
+            {% block similar %}
+            {% endblock similar %}
+          </div>
+        </div>
+      </div>
+      {% endblock leftbar %}
+
+
+      {% block middlebar %}
+      <div class="col-sm-6 col-md-4 col-lg-4">
+        <div class="row">
+          <div class="rightbar_content">
+            {% block photos %}
+            {% endblock photos %}
+
+            <!-- start Popular Posts -->
+            {% block popular %}
+            {% endblock popular %}
+
+          </div>
+        </div>
+      </div>
+      {% endblock middlebar %}
+
+  {% block rightbar %}
+  {% endblock rightbar %}
+
+{% endblock %}

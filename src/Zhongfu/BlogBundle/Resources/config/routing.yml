@@ -1,0 +1,4 @@
+zhongfu_blog_homepage:
+   resource: "@ZhongfuBlogBundle/Controller/"
+   type: annotation
+

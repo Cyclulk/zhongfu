@@ -1,0 +1,43 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+{% block jsmanuel %}
+{% endblock %}
+{% block content %}
+
+    <h1>Liste des Articles</h1>
+    <div class="admin-control-list-panel">
+        <a href="{{ path('_adminIndex') }}" class="btn btn-default" role="button">Index Administration</a>
+        <a href="{{ path('_addContact') }}" class="btn btn-primary" role="button">Ajouter un Contact</a>
+    </div>
+    <br>
+    <br>
+    <table class="table">
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Role</th>
+            <th>Téléphone</th>
+            <th>Email</th>
+        </tr>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.firstname }}</td>
+                <td>{{ contact.lastname }}</td>
+                <td>{{ contact.role }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>{{ contact.email }}</td>
+                <td class="vert-align" style="min-width: 450px;">
+                    <a class="btn btn-info btn-xs" role="button" href="{{ path('_contactModify',{'id': contact.id}) }}">Modifier
+                        le contact</a>
+                    <a class="btn btn-danger btn-xs" role="button"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce contact?');"
+                       href="{{ path('_deleteContact',{'id': contact.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+

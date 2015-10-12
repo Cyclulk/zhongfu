@@ -1,0 +1,48 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+{% block jsmanuel %}
+{% endblock %}
+{% block content %}
+
+    <h1>Liste des Articles</h1>
+    <div class="admin-control-list-panel">
+        <a href="{{ path('_adminIndex') }}" class="btn btn-default" role="button">Index Administration</a>
+        <a href="{{ path('_addArticle') }}" class="btn btn-primary" role="button">Ajouter un article</a>
+    </div>
+    <br>
+    <br>
+    <table class="table">
+        <tr>
+            <th>Titre</th>
+            <th>Slug</th>
+            <th>Categorie</th>
+            <th>Date</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.titre }}</td>
+                <td>{{ article.slug }}</td>
+                <td>{{ article.type.name }}</td>
+                <td>{{ article.date|localizeddate('short', 'none', global_locale ) }}</td>
+                <td>{% if article.avatar is null %}pas d'image{% else %}<img style="max-height: 50px"
+                                                                            src="{{ asset(article.avatar.miniUrl) }}">{% endif %}
+                </td>
+                <td class="vert-align" style="min-width: 450px;">
+                    <a class="btn btn-primary btn-xs" role="button"
+                       href="{{ path('_postsImageModifier',{'id': article.id,'postType':'article'}) }}">Gerer les images</a>
+                    <a class="btn btn-info btn-xs" role="button" href="{{ path('_articleModify',{'id': article.id}) }}">Modifier
+                        l'article</a>
+                    <a class="btn btn-danger btn-xs" role="button"
+                       onclick="return confirm('Voulez-vous vraiment supprimer cet article?');"
+                       href="{{ path('_deleteArticle',{'id': article.id}) }}">Supprimer l'article</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+

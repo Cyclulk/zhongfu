@@ -1,0 +1,166 @@
+{% extends "ZhongfuBlogBundle::onePostDisposition.html.twig" %}
+
+{% block title %}{{ article.titre }}{% endblock %}
+
+            {% block post %}
+              <h2>{{ article.titre }}</h2>
+
+              <!-- start single stuff post -->
+              <div class="singlepost_area">
+                <div class="singlepost_content">
+                  <a href="#" class="stuff_category">{{ article.type.name }}</a>
+                  <span class="stuff_date">{{ article.date|localizeddate('medium', 'none', global_locale ) }}</span>
+
+                  <h2>{{ article.slug }}</h2>
+                  <img class="img-center" src="{{ asset(article.avatar.url) }}" alt="{{ article.avatar.name }}">
+
+                  {{ article.contenu|raw }}
+
+                  <!-- single page pagination  -->
+                  <div class="singlepage_pagination">
+
+                    {% if articleBefore is not empty %}
+                      <a class="previous_btn"
+                         href="{{ path('_UniqueArticle',{'id':articleBefore.id,'category':articleBefore.type.url}) }}">Précédent</a>
+                    {% endif %}
+
+                    {% if articleAfter is not empty %}
+                      <a class="next_btn"
+                         href="{{ path('_UniqueArticle',{'id':articleAfter.id,'category':articleAfter.type.url}) }}">Suivant</a>
+                    {% endif %}
+                  </div>
+
+                  <!-- author area-->
+                  {#<div class="author">#}
+                  {#<a href="#"><img src="{{ asset('images/raymonde2.jpg') }}" alt="raymonde mayer"></a>#}
+
+                  {#<div class="author_details">#}
+                  {#<h3><a href="#">Haimandi</a></h3>#}
+
+                  {#<p>Praticienne de Qi Gong</p>#}
+                  {#</div>#}
+                  {#</div>#}
+                </div>
+              </div>
+              <!-- End single stuff post -->
+            {% endblock post %}
+
+            {% block similar %}
+              {#<!-- start similar post -->#}
+              {#<div class="similar_post_area">#}
+              {#<h2>Similar Post You May Like <i class="fa fa-thumbs-o-up"></i></h2>#}
+              {#<ul class="featured_nav similarpost_nav wow fadeInDown animated"#}
+              {#style="visibility: visible; animation-name: fadeInDown;">#}
+              {#<li>#}
+              {#<a href="#" class="featured_img"><img alt="img" src="img/featured_img1.jpg"></a>#}
+
+              {#<div class="featured_title">#}
+              {#<a href="#" class="">Sed luctus semper odio aliquam rhoncus</a>#}
+              {#</div>#}
+              {#</li>#}
+              {#<li>#}
+              {#<a href="#" class="featured_img"><img alt="img" src="img/featured_img1.jpg"></a>#}
+
+              {#<div class="featured_title">#}
+              {#<a href="#" class="">Sed luctus semper odio aliquam rhoncus</a>#}
+              {#</div>#}
+              {#</li>#}
+              {#<li>#}
+              {#<a href="#" class="featured_img"><img alt="img" src="img/featured_img1.jpg"></a>#}
+
+              {#<div class="featured_title">#}
+              {#<a href="#" class="">Sed luctus semper odio aliquam rhoncus</a>#}
+              {#</div>#}
+              {#</li>#}
+              {#</ul>#}
+              {#</div>#}
+            {% endblock similar %}
+
+      {% block photos %}
+        <!-- start featured post -->
+        <div class="single_blog_sidebar">
+          <h2>Autres images et photos</h2>
+          <ul class="featured_nav wow fadeInDown">
+            {% for image in article.imagesList %}
+              {% if image != article.avatar %}
+                <li>
+                  <div data-toggle="modal"
+                       data-target="#ImageModal{{ loop.index }}" class="featured_img"><img src="{{ asset(image.url) }}"
+                                                                                           alt="image.name"></div>
+                  <div class="featured_title">
+                    <a class="" href="#">{{ image.description }}</a>
+                  </div>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+          </ul>
+        </div>
+
+        {#Modal#}
+        {% for image in article.imagesList %}
+          {% if image != article.avatar %}
+
+            <div id="ImageModal{{ loop.index }}" class="modal fade" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;  </button>
+                    <h4 class="modal-title" id="myModalLabel">{{ image.description }}</h4>
+                  </div>
+                  <div class="modal-body">
+                    <img class="img-responsive" src="{{ asset(image.url) }}" alt="{{ image.name }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {% endif %}
+        {% endfor %}
+        {#modal end#}
+
+        <!-- End featured post -->
+      {% endblock photos %}
+
+      {% block rightbar %}
+        <!-- start middle bar content -->
+        <div class="col-sm-6 col-md-2 col-lg-2">
+          <div class="row">
+            <div class="middlebar_content">
+              <h2 class="yellow_bg">Articles de même categorie</h2>
+
+              <div class="middlebar_content_inner">
+                <ul class="middlebar_nav wow fadeInDown">
+                  {% for article in articlesSameType %}
+                    <li>
+                      <a class="mbar_thubnail"
+                         href="{{ path('_UniqueArticle',{'id':article.id,'category':article.type.url}) }}"><img
+                            src="{{ asset(article.avatar.miniUrl) }}" alt="{{ article.avatar.name }}"></a>
+                      <a class="mbar_title" href="{{ path('_UniqueArticle',{'id':article.id,'category':article.type.url}) }}">{{ article.titre }}</a>
+                    </li>
+                  {% endfor %}
+
+                </ul>
+              </div>
+              <div class="popular_categori">
+                <h2 class="limeblue_bg">Les categories</h2>
+                <ul class="poplr_catgnva wow fadeInDown">
+                  {% for type in types %}
+                    <li><a href="{{ path('_categoryHome',{"category" : type.url}) }}">{{ type.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End middle bar content -->
+      {% endblock rightbar %}
+
+
+
+{% block popular %}
+
+{% endblock popular %}

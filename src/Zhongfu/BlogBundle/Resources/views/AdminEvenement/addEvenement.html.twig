@@ -1,0 +1,66 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block jsmanuel %}
+    <script type="text/javascript" src="{{ asset('js/tinymce4/tinymce.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="well-lg">
+        <div class="form-group">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            {{ form_label(form.titre,"Titre de l'événement :") }}
+            <div class="alert-danger">
+                {{ form_errors(form.titre) }}
+            </div>
+            {{ form_widget(form.titre,{attr:{'size':'80'}}) }}
+            <br>
+            {{ form_label(form.slug,"Slug de l'événement :") }}
+            <div class="alert-danger">
+                {{ form_errors(form.slug) }}
+            </div>
+            {{ form_widget(form.slug,{attr:{'size':'100'}}) }}
+            <br>
+            {{ form_label(form.date,"Date de l'événement :") }}
+            <div class="alert-danger">
+                {{ form_errors(form.date) }}
+            </div>
+            {{ form_widget(form.date) }}
+
+            {{ form_label(form.dateEnd,"Date de fin l'événement (facultatif, laisser par défaut pour aucune):") }}
+            <div class="alert-danger">
+                {{ form_errors(form.dateEnd) }}
+            </div>
+            {{ form_widget(form.dateEnd) }}
+            <br>
+            {{ form_label(form.type,"Categorie de l'événement :") }}
+            {{ form_widget(form.type) }}
+            <div class="alert-danger">
+                {{ form_errors(form.type) }}
+            </div>
+        </div>
+
+        <br>
+        {{ form_label(form.contenu,"Contenu :") }}
+        {{ form_widget(form.contenu ,{'attr':{'class':'wysiwyg'}}) }}
+
+            {{ form_errors(form.contenu) }}
+        <br>
+
+        {{ form_widget(form.save,{'attr':{'class': 'btn btn-primary'},'label':'Sauvegarder'}) }}
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+
+
+{% endblock %}

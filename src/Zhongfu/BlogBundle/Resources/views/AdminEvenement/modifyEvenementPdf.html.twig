@@ -1,0 +1,54 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block jsmanuel %}
+
+{% endblock %}
+
+{% block content %}
+    <br><br><br>
+    <a href="{{ path('_evenementList') }}" class="btn btn-primary">Revenir a la liste des evenements</a>
+    <br>
+
+    <table class="table table-image-list">
+        <tr>
+            <th>Nom de l'evenement</th>
+            <th>Date</th>
+            <th>Fichier</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr>
+            <td>{{ evenement.titre }}</td>
+            <td>{{ evenement.date|localizeddate('short', 'none', global_locale ) }}</td>
+            <td>{% if evenement.formSeminarFile %}{{ evenement.formSeminarFile.file }}{% endif %}</td>
+            <td>{% if evenement.formSeminarFile %}<a class="btn btn-danger" role="button"
+                                                     onclick="return confirm('Voulez-vous vraiment supprimer ce Pdf?');"
+                                                     href="{{ path('_deleteEvenementPdf',{'iPdfId': evenement.formSeminarFile.id,'eventId': evenement.id}) }}">
+                        Supprimer</a> <a class="btn btn-primary" role="button" href="{{ asset(evenement.formSeminarFile.url) }}">
+                        Voir</a>{% endif %}</td>
+        </tr>
+
+    </table>
+    {% if not evenement.formSeminarFile %}
+        <h3>Envoyer un Pdf</h3>
+
+        <div class="well">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_label(form.file,"Fichier a envoyer :") }}
+            {{ form_widget(form.file) }}
+            <div class="alert-danger">
+                {{ form_errors(form.file) }}
+            </div>
+            {{ form_widget(form.save,{'attr':{'class': 'btn btn-primary'},'label':'Envoyer'}) }}
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

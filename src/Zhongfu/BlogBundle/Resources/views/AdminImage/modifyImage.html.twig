@@ -1,0 +1,69 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block jsmanuel %}
+
+{% endblock %}
+
+{% block content %}
+    <h3>Liste des images deja disponibles</h3>
+    <br>
+    <a href="{{ path('_'~postType~'List') }}" class="btn btn-primary">Revenir a la liste des {{ postType }}s</a>
+    <br>
+
+    <table class="table table-image-list">
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Fichier</th>
+            <th>Miniature</th>
+            <th>Avatar</th>
+            <th>Actions</th>
+        </tr>
+        {% for image in images %}
+            <tr>
+                <td {% if idOfAvatar == image.id %}id="image-avatar" {%  endif %} style="width: 250px">{{ image.name }}</td>
+                <td>{{ image.description }}</td>
+                <td style="width: 130px">{{ image.file }}</td>
+                <td style="width: 80px"><img style="max-height: 100px" src="{{ asset(image.path~'/mini_'~image.file) }}" alt="{{ image.name }}">
+                </td>
+                <td style="width: 50px">{% if idOfAvatar != image.id %}<a class="btn btn-primary" role="button"
+                       href="{{ path('_setImage',{'id': image.id,'postType': postType}) }}">Assigner l"image</a>{% endif %}</td>
+                <td style="width: 50px">{% if idOfAvatar != image.id %}<a class="btn btn-danger" role="button"
+                       onclick="return confirm('Voulez-vous vraiment supprimer cette image?');"
+                       href="{{ path('_deleteImage',{'id': image.id,'postType': postType}) }}">Supprimer</a>{% endif %}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Envoyer une image</h3>
+
+    <div class="well">
+        {{ form_start(form) }}
+
+        {{ form_errors(form) }}
+
+
+        {{ form_label(form.name,"Nom de l'image :") }}
+        {{ form_errors(form.name) }}
+        {{ form_widget(form.name) }}
+        <br>
+        {{ form_label(form.description,"Description :") }}
+        {{ form_errors(form.description) }}
+        {{ form_widget(form.description,{'attr':{'size': '100'}}) }}
+        <br>
+        {{ form_label(form.file,"Fichier a envoyer :") }}
+        {{ form_widget(form.file) }}
+        <div class="alert-danger">
+            {{ form_errors(form.file) }}
+        </div>
+        {{ form_widget(form.save,{'attr':{'class': 'btn btn-primary'},'label':'Envoyer'}) }}
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

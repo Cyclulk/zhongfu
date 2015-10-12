@@ -1,0 +1,48 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block jsmanuel %}
+    <script type="text/javascript" src="{{ asset('js/tinymce4/tinymce.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Ajouer un lien</h2>
+
+    <div class="well-lg">
+        <div class="form-group">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            {{ form_label(form.name,"Nom du lien :") }}
+            <div class="alert-danger">
+                {{ form_errors(form.name) }}
+            </div>
+            {{ form_widget(form.name,{attr:{'size':'30'}}) }}
+
+            <br>
+            {{ form_label(form.url,"Adresse :") }}
+            <div class="alert-danger">
+                {{ form_errors(form.url) }}
+            </div>
+            {{ form_widget(form.url,{attr:{'size':'60'}}) }}
+
+            <br>
+            {{ form_label(form.description,"Description :") }}
+            <div class="alert-danger">
+                {{ form_errors(form.description) }}
+            </div>
+            {{ form_widget(form.description,{attr:{'size':'100'}}) }}
+        </div>
+        <br>
+
+        {{ form_widget(form.save,{'attr':{'class': 'btn btn-primary'},'label':'Sauvegarder'}) }}
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,58 @@
+<div class="container">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path ('_homepage') }}"><span>ZhongFu</span> .fr</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav custom_nav">
+                    <li class=""><a href="{{ path ('_homepage') }}">Accueil</a></li>
+                    <li data-toggle="modal" data-target="#CoursModal"><a>Cours à l'année</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categories</a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% for category in types %}
+                                <li>
+                                    <a href="{{ path('_categoryHome',{"category" : category.url}) }}">{{ category.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Médias
+                            & Archives</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ path('_imagesArchives') }}">Photos et images</a></li>
+                            {#<li><a href="#">Videos</a></li>#}
+                            <li><a href="{{ path('_articlesArchives') }}">Articles</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Liens</a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% for link in links %}
+                            <li><a href="{{ link.url }}"><strong>{{ link.name }}</strong>: {{ link.description }} </a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+
+                    <li data-toggle="modal" data-target="#ContactModal"><a>Contact</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+    </nav>
+    {#<form id="searchForm">#}
+    {#<input type="text" placeholder="Cherchez...">#}
+    {#<input type="submit" value="">#}
+    {#</form>#}
+</div>

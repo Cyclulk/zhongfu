@@ -1,0 +1,31 @@
+<div class="panel panel-primary" id="panel-related-articles">
+    <div class="panel-heading">
+        <h3 class="panel-title related-articles-panel-title">Articles qui pourrait vous intéresser : </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-condensed">
+            {% for post in articles %}
+                <tr>
+                    <td><a href="{{ path('_UniqueArticle',{'id':post.id,'category':post.type.url}) }}">{{ post.titre }}</a></td>
+                    <td>Ajouté le: {{ post.date|localizeddate('long', 'none', global_locale ) }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-success" id="panel-related-articles">
+    <div class="panel-heading">
+        <h3 class="panel-title related-articles-panel-title">Evénements à découvrir : </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-condensed">
+            {% for post in evenements %}
+                <tr>
+                    <td><a href="{{ path('_UniqueArticle',{'id':post.id,'category':post.type.url}) }}">{{ post.titre }}</a></td>
+                    <td>Ajouté le: {{ post.date|localizeddate('long', 'none', global_locale ) }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

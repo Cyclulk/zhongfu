@@ -1,0 +1,45 @@
+{% extends "ZhongfuBlogBundle::oneLineDisposition.html.twig" %}
+
+{% block title %}Association Zhong Fu Médias Photos{% endblock %}
+
+{% block bigCenter %}
+    <div class="row">
+
+        <div class="leftbar_content single_stuff wow fadeInDown">
+
+            <h2>Liste des articles</h2>
+
+            {% for image in images %}
+                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    <div class="thumbnail" data-toggle="modal"
+                       data-target="#ImageModal{{ loop.index }}">
+                        <img class="img-responsive" style="height: 200px" src="{{ asset(image.url) }}"
+                             alt="{{ image.name }}">
+                    </div>
+                    <h6 style="text-align: center;margin-top: -15px;margin-bottom: 40px ">{{ image.description }}</h6>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% for image in images %}
+
+            <div id="ImageModal{{ loop.index }}" class="modal fade" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">&times;  </button>
+                            <h4 class="modal-title" id="myModalLabel">{{ image.description }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <img class="img-responsive" src="{{ asset(image.url) }}" alt="{{ image.name }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    {% endfor %}
+{% endblock bigCenter %}

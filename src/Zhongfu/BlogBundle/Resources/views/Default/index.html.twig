@@ -1,0 +1,100 @@
+{% extends "ZhongfuBlogBundle::homepageDisposition.html.twig" %}
+
+{% block title %}Association Zhong Fu{% endblock %}
+
+ {% block leftbar %}
+   <div class=" col-sm-12 col-md-6 col-lg-6">
+     <div class="row">
+       <div class="leftbar_content">
+         <h2>Dernier articles</h2>
+         {% block singleStufPost %}
+           {% for article in articles %}
+           <!-- start single stuff post -->
+           <div class="single_stuff wow fadeInDown">
+             <div class="single_stuff_img">
+               <a href="{{ path('_UniqueArticle',{'id':article.id,'category':article.type.url}) }}"><img src="{{ asset(article.avatar.url) }}" alt="img"></a>
+             </div>
+             <div class="single_stuff_article">
+               <div class="single_sarticle_inner">
+                 <a class="stuff_category" href="{{ path('_categoryHome',{"category" : article.type.url}) }}">{{ article.type.name }}</a>
+
+                 <div class="stuff_article_inner">
+                   <span class="stuff_date">{{ article.date|localizeddate('medium', 'none', global_locale ) }}</span>
+
+                   <h2><a href="{{ path('_UniqueArticle',{'id':article.id,'category':article.type.url}) }}">{{ article.titre }}</a></h2>
+
+                   <p>{{ article.slug }}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+             {% endfor %}
+         {% endblock singleStufPost %}
+       </div>
+     </div>
+   </div>
+ {% endblock leftbar %}
+
+ {% block middlebar %}
+   <div class="col-sm-6 col-md-2 col-lg-2">
+     <div class="row">
+       <div class="middlebar_content">
+         <h2 class="yellow_bg">En Vedette</h2>
+
+         <div class="middlebar_content_inner wow fadeInUp">
+           <ul class="middlebar_nav">
+             {% for postVedette in enVedettes %}
+             <li>
+               <a class="mbar_thubnail" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
+               <a class="mbar_title" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
+             </li>
+               {% endfor %}
+           </ul>
+         </div>
+         <div class="popular_categori  wow fadeInUp">
+           <h2 class="limeblue_bg">Les categories</h2>
+           <ul class="poplr_catgnva">
+             {% for type in types %}
+             <li><a href="{{ path('_categoryHome',{"category" : type.url}) }}">{{ type.name }}</a></li>
+               {% endfor %}
+           </ul>
+         </div>
+
+         <h2 class="blue_bg">{{ poeme.titre }} </h2>
+
+         <div class="middlebar_content_inner wow fadeInUp">
+           <ul class="middlebar_nav">
+               <li>
+                 <p>{{ poeme.contenu|raw }}</p>
+                 <em>{{ poeme.auteur }} {{ poeme.date|localizeddate('medium', 'none', global_locale ) }}</em>
+               </li>
+           </ul>
+         </div>
+
+       </div>
+     </div>
+   </div>
+ {% endblock middlebar %}
+
+  {% block evenements %}
+    <div class="single_blog_sidebar wow fadeInUp">
+      <h2>Événements</h2>
+      <ul class="featured_nav">
+        {% for evenement in evenements %}
+        <li>
+          <span class="stuff_date evenement-date ">{% if not evenement.isOneDay %}Du<br>{% endif %}{{ evenement.date|localizeddate('full', 'none', global_locale ) }}</span>
+          {% if not evenement.isOneDay %}
+          <span class="stuff_date evenement-date-end">Au {{ evenement.dateEnd|localizeddate('full', 'none', global_locale ) }}</span>
+            {% endif %}
+          <a class="featured_img" href="{{ path('_UniqueEvenement',{'id':evenement.id,'category':evenement.type.url}) }}"><img src="{{ asset(evenement.avatar.url) }}" alt="img"></a>
+          <div class="featured_title">
+            <a class="stuff_category" href="#">{{ evenement.type.name }}</a>
+            <a class="" href="{{ path('_UniqueEvenement',{'id':evenement.id,'category':evenement.type.url}) }}"><h3>{{ evenement.titre }}</h3></a>
+            <p>{{ evenement.slug }}</p>
+          </div>
+        </li>
+          {% endfor %}
+      </ul>
+    </div>
+  {% endblock evenements %}
+

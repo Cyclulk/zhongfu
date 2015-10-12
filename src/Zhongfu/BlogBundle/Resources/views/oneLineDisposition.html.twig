@@ -1,0 +1,21 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block content %}
+  <section id="contentbody">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="bigMiddlebar_content">
+             {% block bigCenter %}
+
+             {% endblock bigCenter %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

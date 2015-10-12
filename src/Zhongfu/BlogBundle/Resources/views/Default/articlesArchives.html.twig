@@ -1,0 +1,28 @@
+{% extends "ZhongfuBlogBundle::oneLineDisposition.html.twig" %}
+
+{% block title %}Association Zhong Fu Médias{% endblock %}
+
+{% block bigCenter %}
+<div class=" col-xs-12">
+    <div class="row">
+        <div class="leftbar_content single_stuff wow fadeInDown">
+
+    <h2>Liste des articles</h2>
+    <table class="table table-responsive">
+        <thead>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+        <tr {% if loop.index % 3 == 0 %} class="danger" {% elseif  loop.index % 2 == 0  %}class="success"{% else %}class="info"{% endif %}>
+            <td style="min-width: 130px"><a href="{{ path('_UniqueArticle',{'id':article.id,'category':article.type.url}) }}"><strong>{{ article.titre }}</strong></a></td>
+            <td style="width: 150px"><a href="{{ path('_categoryHome',{"category" : article.type.url}) }}"><em>{{ article.type.name }}</em></a></td>
+            <td class="hidden-xs">{{ article.slug }}</td>
+            <td style="width: 120px"><p style="text-align: right">{{ article.date|localizeddate('medium', 'none', global_locale ) }}</p></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        </div>
+    </div>
+</div>
+{% endblock bigCenter %}

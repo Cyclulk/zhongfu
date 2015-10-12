@@ -1,0 +1,46 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+{% block jsmanuel %}
+{% endblock %}
+{% block content %}
+
+    <h1>Liste des Evenements</h1>
+    <div class="admin-control-list-panel">
+        <a href="{{ path('_adminIndex') }}" class="btn btn-default" role="button">Index Administration</a>
+        <a href="{{ path('_addEvenement') }}" class="btn btn-primary" role="button">Ajouter un evenement</a>
+    </div>
+    <br>
+    <br>
+    <table class="table">
+        <tr>
+            <th>Titre</th>
+            <th>Slug</th>
+            <th>Categorie</th>
+            <th>Date</th>
+            <th>Image</th>
+            <th>Formulaire</th>
+            <th>Actions</th>
+        </tr>
+    {% for evenement in evenements %}
+                <tr>
+                    <td>{{ evenement.titre }}</td>
+                    <td>{{ evenement.slug}}</td>
+                    <td>{{ evenement.type.name }}</td>
+                    <td>{{ evenement.date|localizeddate('short', 'none', global_locale ) }}</td>
+                    <td>{% if evenement.avatar is null %}pas d'image{% else %}<img style="max-height: 50px" src="{{ asset(evenement.avatar.url) }}">{% endif %}</td>
+                    <td>{% if evenement.formSeminarFile is null %}Aucun formulaire{% else %}<a class="btn btn-default" role="button" href="{{ asset(evenement.formSeminarFile.url) }}">
+                                Voir</a>{% endif %}</td>
+                    <td class="vert-align" style="min-width: 450px;">
+                        <a class="btn btn-primary btn-xs" role="button" href="{{ path('_postsImageModifier',{'id': evenement.id,'postType':'evenement'}) }}" >Gerer les images</a>
+                        <a class="btn btn-info btn-xs" role="button" href="{{ path('_evenementModify',{'id': evenement.id}) }}" >Modifier l'evenement</a>
+                        <a class="btn btn-default btn-xs" role="button" href="{{ path('_evenementPdfModify',{'id': evenement.id}) }}" >Modifier le Pdf</a>
+                        <a class="btn btn-danger btn-xs" role="button" onclick="return confirm('Voulez-vous vraiment supprimer cet evenement?');" href="{{ path('_deleteEvenement',{'id': evenement.id}) }}" >Supprimer l'evenement</a>
+                    </td>
+                </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+

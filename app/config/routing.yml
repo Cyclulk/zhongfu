@@ -1,0 +1,12 @@
+zhongfu_media_manager:
+    resource: "@ZhongfuMediaManagerBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+zhongfu_blog:
+    resource: "@ZhongfuBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+
+

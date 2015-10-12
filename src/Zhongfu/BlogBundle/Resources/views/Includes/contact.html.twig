@@ -1,0 +1,107 @@
+<div class="modal fade" id="ContactModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 class="modal-title">Pour nous contacter</h3>
+            </div>
+            <div class="modal-body">
+                <div class="hidden-sm hidden-xs">
+                    <table class="table" id="tblGrid">
+                        <thead id="tblHead">
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th><span class="fa fa- fa-user fa-lg"></span> Role</th>
+                            <th><span class="fa fa-phone fa-lg"></span> Téléphone</th>
+                            <th><span class="fa fa-envelope fa-lg"></span> Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for contact in contacts %}
+                            <tr>
+                                <td>{{ contact.firstname|capitalize }}</td>
+                                <td>{{ contact.lastname|capitalize }}</td>
+                                <td>{{ contact.role|capitalize }}</td>
+                                <td>{{ contact.phone }}</td>
+                                <td><a href="mailto:{{ contact.email }}"> {{ contact.email }}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="hidden-lg hidden-md">
+                    {% for contact in contacts %}
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">{{ contact.firstname|capitalize }} {{ contact.lastname|capitalize }}</div>
+                            <div class="panel-body">
+                                <ul class="list-inline">
+                                    <li><span class="fa fa-phone fa-lg"></span> {{ contact.phone }}</li>
+                                    <li><span class="fa fa-envelope fa-lg"></span><a
+                                                href="mailto:{{ contact.email }}"> {{ contact.email }}</a></li>
+                                    <li><span class="fa fa- fa-user fa-lg"></span> {{ contact.role }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <h3 class="modal-title" >Par formulaire</h3>
+
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form_label(form.firstname,"Prénom :") }}
+                        {{ form_widget(form.firstname,{attr:{'size':'15','class':'form-control'}}) }}
+                        {{ form_errors(form.firstname) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_label(form.lastname,"Nom :") }}
+                        {{ form_widget(form.lastname,{attr:{'size':'15','class':'form-control'}}) }}
+                        {{ form_errors(form.lastname) }}
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        {{ form_label(form.email,"Email :") }}
+                        {{ form_widget(form.email,{attr:{'class':'form-control'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.phone,"Téléphone :") }}
+                        {{ form_widget(form.phone,{attr:{'class':'form-control'}}) }}
+                        {{ form_errors(form.phone) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.subject,"Sujet:") }}
+                    {{ form_widget(form.subject,{attr:{'class':'form-control'}}) }}
+                    {{ form_errors(form.subject) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.content,"Message:") }}
+                    {{ form_widget(form.content,{attr:{'class':'form-control','rows':'8'}}) }}
+                    {{ form_errors(form.content) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{ form_widget(form.save,{'attr':{'class': 'btn btn-primary'},'label':'Envoyer'}) }}
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+                <button type="button" class="btn btn-default " data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="taichi, tai, chi, qigong, qi, gong, energie, energetique">
+    <meta name="description" content="{% block description %}Page d'acceuil de l'association zhong fu{% endblock %}">
+    <meta name="author" content="Vincent Mayer">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Association Zhong Fu{% endblock %}</title>
+
+
+    {% block css %}
+        {% stylesheets filter='cssrewrite'
+        '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css'
+        '@ZhongfuBlogBundle/Resources/public/css/*' %}
+
+        <link href="{{ asset_url }}" rel="stylesheet">
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% javascripts
+    '%kernel.root_dir%/../vendor/components/jquery/jquery.min.js'
+    '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
+    'https://maps.googleapis.com/maps/api/js'
+    '@ZhongfuBlogBundle/Resources/public/js/wow.min.js'
+    '@ZhongfuBlogBundle/Resources/public/js/custom.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% block jsmanuel %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+{% block banner %}
+{% endblock %}
+
+<header id="header">
+    {% block navigation %}
+        {# navigation #}
+        {% if category is defined %}
+            {{ render(controller("ZhongfuBlogBundle:Includes:navigation",{'oCategory': category})) }}
+        {% else %}
+            {{ render(controller("ZhongfuBlogBundle:Includes:navigation")) }}
+        {% endif %}
+    {% endblock %}
+</header>
+
+<a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+{# contenu #}
+{% block content %}
+{% endblock %}
+{% block footer %}
+    {{ render(controller("ZhongfuBlogBundle:Includes:footer")) }}
+{% endblock %}
+{% block contact %}
+    {{ render(controller("ZhongfuBlogBundle:Includes:contact")) }}
+{% endblock contact %}
+{% block cours %}
+    {{ render(controller("ZhongfuBlogBundle:Includes:cours")) }}
+{% endblock cours %}
+</body>
+</html>
+

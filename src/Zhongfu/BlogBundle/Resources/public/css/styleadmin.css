@@ -1,0 +1,54 @@
+#table-admin {
+    border-spacing: 10px;
+}
+
+#table-admin th, #table-admin td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#table-admin th, #table-admin td {
+    padding: 5px;
+}
+
+#table-admin tr:hover td {
+    background-color: blue;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.admin-index {
+    margin: auto;
+    background-color: #e7e7e7;
+    width: 400px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border: solid 3px #000000;
+}
+
+.admin-index p {
+    text-align: center;
+    font-size: large;
+}
+
+.table tbody > tr > td.vert-align {
+    vertical-align: middle;
+}
+
+#image-avatar {
+    background-color: #66dd66;
+    color: red;
+}
+
+.table-image-list img {
+    height: 50px;
+}
+
+#admin-panel {
+    width: 400px;
+    text-align: center;
+}
+
+#admin-panel ul{
+    list-style: circle;
+}

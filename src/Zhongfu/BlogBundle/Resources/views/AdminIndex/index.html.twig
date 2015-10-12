@@ -1,0 +1,35 @@
+{% extends "ZhongfuBlogBundle::layout.html.twig" %}
+
+{% block jsmanuel %}
+    <script type="text/javascript" src="{{ asset('js/tinymce4/tinymce.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <br><br><br>
+    <div class="container panel panel-primary" id="admin-panel">
+        <div class="page-header">
+            <h3>Options disponibles</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li><a href="{{ path('_addArticle') }}">Ajouter un article</a></li>
+                <li><a href="{{ path('_articleList') }}">Liste des articles</a></li>
+                <hr>
+                <li><a href="{{ path('_addEvenement') }}">Ajouter un evenement</a></li>
+                <li><a href="{{ path('_evenementList') }}">Liste des evenements</a></li>
+                <hr>
+                <li><a href="{{ path('_addContact') }}">Ajouter des contacts</a></li>
+                <li><a href="{{ path('_contactList') }}">Liste des contacts</a></li>
+                <hr>
+                <li><a href="{{ path('_addLink') }}">Ajouter des liens</a></li>
+                <li><a href="{{ path('_linkList') }}">Liste des liens</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+
+
+{% endblock %}
