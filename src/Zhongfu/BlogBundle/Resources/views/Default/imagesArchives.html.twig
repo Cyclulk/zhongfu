@@ -7,7 +7,7 @@
 
         <div class="leftbar_content single_stuff wow fadeInDown">
 
-            <h2>Liste des articles</h2>
+            <h2>Album des images et photos</h2>
 
             {% for image in images %}
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
@@ -16,7 +16,7 @@
                         <img class="img-responsive" style="height: 200px" src="{{ asset(image.url) }}"
                              alt="{{ image.name }}">
                     </div>
-                    <h6 style="text-align: center;margin-top: -15px">{{ image.description }}</h6>
+                    <h6 style="text-align: center;margin-top: -15px; height: 60px">{{ image.description }}</h6>
                 </div>
             {% endfor %}
         </div>
