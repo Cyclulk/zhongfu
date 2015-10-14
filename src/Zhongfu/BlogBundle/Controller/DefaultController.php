@@ -5,6 +5,10 @@ namespace Zhongfu\BlogBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Zhongfu\BlogBundle\Form\SendEmailContactType;
+use Zhongfu\BlogBundle\Entity\SendEmailContact;
+
 
 class DefaultController extends Controller
 {
@@ -15,13 +19,14 @@ class DefaultController extends Controller
      * @Route("/",name="_homepage")
      * @Template()
      */
-    public function indexAction($iLimitArticles = self::DEFAULT_ARTICLE_LIMIT)
+    public function indexAction(Request $request, $iLimitArticles = self::DEFAULT_ARTICLE_LIMIT)
     {
+        $this->handleContact($request);
         $aTypes = $this->getDoctrine()->getManager()->getRepository('ZhongfuBlogBundle:Type')->findAll();
 
         $oEntityManager = $this->getDoctrine()->getManager();
         $oArticleManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Article');
-        $aArticles = $oArticleManager->findBy(array(), array('date'=>'desc'), $iLimitArticles, 0);
+        $aArticles = $oArticleManager->findBy(array(), array('date' => 'desc'), $iLimitArticles, 0);
 
         $query = $oEntityManager->createQuery('SELECT e FROM ZhongfuBlogBundle:Evenement e WHERE e.date > CURRENT_DATE() ORDER BY e.date ');
         $aEvenements = $query->getResult();
@@ -29,15 +34,50 @@ class DefaultController extends Controller
         $oPoemeSelected = $this->getPoeme();
         $aPostsVedette = $this->getEnVedette();
 
+
         return ['articles' => $aArticles, 'evenements' => $aEvenements, 'poeme' => $oPoemeSelected, 'types' => $aTypes, 'enVedettes' => $aPostsVedette];
+    }
+
+    private function handleContact($request)
+    {
+        $oSendEmailContact = new SendEmailContact();
+        $oForm = $this->createForm(new SendEmailContactType(), $oSendEmailContact);
+
+        if ($request->getMethod() == 'POST') {
+            $oForm->handleRequest($request);
+
+            if ($oForm->isValid()) {
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($oSendEmailContact->getSubject())
+                    ->setFrom($oSendEmailContact->getEmail())
+                    ->setTo('administrateur@zhongfu.eu')
+                    ->setBody($oSendEmailContact->getContent())
+                    ->setBody($this->renderView(
+                        'ZhongfuBlogBundle:Default:email.html.twig',
+                        array(
+                            'firstName' => $oSendEmailContact->getFirstname(),
+                            'lastName' => $oSendEmailContact->getLastname(),
+                            'phone' => $oSendEmailContact->getPhone(),
+                            'content' => $oSendEmailContact->getContent()
+                        )
+                    ),
+                        'text/html'
+                    );
+                $this->get('mailer')->send($message);
+
+                unset($oForm);
+                return $this->redirect($this->generateUrl('_homepage'));
+            }
+        }
     }
 
     /**
      * @Route("/{category}",requirements = {"category"="[a-z]+"}, name="_categoryHome")
      * @Template()
      */
-    public function categoryHomeAction($iLimitArticles = self::DEFAULT_ARTICLE_LIMIT, $iLimitEvenements = self::DEFAULT_EVENEMENT_LIMIT, $category)
+    public function categoryHomeAction(Request $request, $iLimitArticles = self::DEFAULT_ARTICLE_LIMIT, $iLimitEvenements = self::DEFAULT_EVENEMENT_LIMIT, $category)
     {
+        $this->handleContact($request);
         $oEntityManager = $this->getDoctrine()->getManager();
 
         //Creating array of type of category to check if type exist
@@ -48,23 +88,23 @@ class DefaultController extends Controller
         $aPostsVedette = $this->getEnVedette();
         $oPoemeSelected = $this->getPoeme();
 
-        foreach($aType as $oType){
+
+        foreach ($aType as $oType) {
             $aTypeNameList[] = $oType->getUrl();
         }
 
-        if(in_array($category,$aTypeNameList))
-        {
+        if (in_array($category, $aTypeNameList)) {
             $oTypeSelected = $oTypeManager->findOneByUrl($category);
             $sIdOfType = $oTypeSelected->getId();
 
             $oArticleManager = $oEntityManager->getRepository("ZhongfuBlogBundle:Article");
-            $aArticles = $oArticleManager->findBy(array('type' => $sIdOfType), array('date'=>'desc'), $iLimitArticles, 0);
+            $aArticles = $oArticleManager->findBy(array('type' => $sIdOfType), array('date' => 'desc'), $iLimitArticles, 0);
 
             $oEvenementManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Evenement');
-            $aEvenements = $oEvenementManager->findBy(array('type' => $sIdOfType), array('date'=>'desc'), $iLimitEvenements, 0);
+            $aEvenements = $oEvenementManager->findBy(array('type' => $sIdOfType), array('date' => 'desc'), $iLimitEvenements, 0);
 
-            return ['articles'=>$aArticles, 'evenements'=>$aEvenements, 'category'=>$oTypeSelected,  'enVedettes' => $aPostsVedette,  'types' => $aType, 'poeme' => $oPoemeSelected];
-        }else{
+            return ['articles' => $aArticles, 'evenements' => $aEvenements, 'category' => $oTypeSelected, 'enVedettes' => $aPostsVedette, 'types' => $aType, 'poeme' => $oPoemeSelected];
+        } else {
             return $this->redirect($this->generateUrl('_homepage'));
         }
     }
@@ -73,7 +113,9 @@ class DefaultController extends Controller
      * @Route("/{category}/evenement/{id}",requirements = {"category"="[a-z]+","id"="[0-9]+"}, name="_UniqueEvenement")
      * @Template()
      */
-    public function uniqueEvenementAction($id){
+    public function uniqueEvenementAction(Request $request, $id)
+    {
+        $this->handleContact($request);
 
         $oEntityManager = $this->getDoctrine()->getManager();
         $oEvenementManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Evenement');
@@ -87,7 +129,7 @@ class DefaultController extends Controller
         $oBefore = $oEvenementManager->findOneById($aNeighborsIds['prev']);
         $oAfter = $oEvenementManager->findOneById($aNeighborsIds['suiv']);
 
-        $aArticlesSameType = $oArticleManager->findBy(array('type' => $oEvenement->getType()), array('date'=>'desc'), $this::DEFAULT_ARTICLE_LIMIT, 0);
+        $aArticlesSameType = $oArticleManager->findBy(array('type' => $oEvenement->getType()), array('date' => 'desc'), $this::DEFAULT_ARTICLE_LIMIT, 0);
 
         return ['evenement' => $oEvenement, 'types' => $oType, 'articlesSameType' => $aArticlesSameType, 'evenementBefore' => $oBefore, 'evenementAfter' => $oAfter];
     }
@@ -96,13 +138,15 @@ class DefaultController extends Controller
      * @Route("/{category}/article/{id}",requirements = {"category"="[a-z]+","id"="[0-9]+"}, name="_UniqueArticle")
      * @Template()
      */
-    public function uniqueArticleAction($id){
+    public function uniqueArticleAction(Request $request, $id)
+    {
+        $this->handleContact($request);
 
         $oEntityManager = $this->getDoctrine()->getManager();
         $oArticleManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Article');
         $oArticle = $oArticleManager->findOneById($id);
 
-        $aArticlesSameType = $oArticleManager->findBy(array('type' => $oArticle->getType()), array('date'=>'desc'), $this::DEFAULT_ARTICLE_LIMIT, 0);
+        $aArticlesSameType = $oArticleManager->findBy(array('type' => $oArticle->getType()), array('date' => 'desc'), $this::DEFAULT_ARTICLE_LIMIT, 0);
 
         $oType = $this->getAll('Type');
 
@@ -128,8 +172,7 @@ class DefaultController extends Controller
             ->setBody(
                 $this->renderView(
                     'ZhongfuBlogBundle:Default:testEmail.html.twig'),
-                'text/html')
-        ;
+                'text/html');
         $this->get('mailer')->send($message);
 
         return [];
@@ -138,7 +181,8 @@ class DefaultController extends Controller
     /**
      * @return array
      */
-    public function getEnVedette(){
+    public function getEnVedette()
+    {
 
         $oEntityManager = $this->getDoctrine()->getManager();
 
@@ -147,12 +191,13 @@ class DefaultController extends Controller
         $query = $oEntityManager->createQuery('SELECT a FROM ZhongfuBlogBundle:Evenement a WHERE a.is_vedette = TRUE ');
         $aEvenementsVedette = $query->getResult();
 
-        $aPostsVedette = array_merge($aArticlesVedette,$aEvenementsVedette);
+        $aPostsVedette = array_merge($aArticlesVedette, $aEvenementsVedette);
 
         return $aPostsVedette;
     }
 
-    public function getAll($sType){
+    public function getAll($sType)
+    {
         $oEntityManager = $this->getDoctrine()->getManager()->getRepository("ZhongfuBlogBundle:$sType");
         $aObjects = $oEntityManager->findAll();
         return $aObjects;
@@ -162,27 +207,32 @@ class DefaultController extends Controller
      * @Route("/articles/archives",name="_articlesArchives")
      * @Template()
      */
-    public function articlesArchivesAction(){
+    public function articlesArchivesAction(Request $request)
+    {
+        $this->handleContact($request);
 
         $oEntityManager = $this->getDoctrine()->getManager();
         $oArticleManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Article');
-        $aArticles = $oArticleManager->findBy(array(), array('date'=>'desc'));
-        return['articles' => $aArticles ];
+        $aArticles = $oArticleManager->findBy(array(), array('date' => 'desc'));
+        return ['articles' => $aArticles];
     }
 
     /**
      * @Route("/images/archives",name="_imagesArchives")
      * @Template()
      */
-    public function imagesArchivesAction(){
+    public function imagesArchivesAction(Request $request)
+    {
+        $this->handleContact($request);
 
         $oEntityManager = $this->getDoctrine()->getManager();
         $oImageManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Image');
-        $aImages = $oImageManager->findBy(array(), array('id'=>'desc'));
-        return['images' => $aImages ];
+        $aImages = $oImageManager->findBy(array(), array('id' => 'desc'));
+        return ['images' => $aImages];
     }
 
-    public function getNeighborsIds($oPost){
+    public function getNeighborsIds($oPost)
+    {
 
         $sClass = join('', array_slice(explode('\\', get_class($oPost)), -1));
         $oEntityManager = $this->getDoctrine()->getManager();
@@ -195,18 +245,16 @@ class DefaultController extends Controller
 
         $aIdsOfNeightbors = array();
         //setting pointeur of array
-        while($val=current($aIdsOdPost))
-        {
-            if($val==$iPostId)
-            break;
+        while ($val = current($aIdsOdPost)) {
+            if ($val == $iPostId)
+                break;
             next($aIdsOdPost);
         }
 
         $aIdsOfNeightbors['prev'] = prev($aIdsOdPost);
 
-        while($val=current($aIdsClone))
-        {
-            if($val==$iPostId)
+        while ($val = current($aIdsClone)) {
+            if ($val == $iPostId)
                 break;
             next($aIdsClone);
         }
@@ -215,13 +263,14 @@ class DefaultController extends Controller
         return $aIdsOfNeightbors;
     }
 
-    public function getPoeme(){
+    public function getPoeme()
+    {
 
         $oEntityManager = $this->getDoctrine()->getManager();
         $oPoemeManager = $oEntityManager->getRepository('ZhongfuBlogBundle:Poeme');
 
         $aPoemes = $oPoemeManager->findAll();
-        $iKeyOfSelectedPoeme = rand(0,count($aPoemes)-1);
+        $iKeyOfSelectedPoeme = rand(0, count($aPoemes) - 1);
 
         return $aPoemes[$iKeyOfSelectedPoeme];
     }

@@ -99,11 +99,11 @@ doctrine:
 swiftmailer:
     transport: smtp
     auth_mode: login
-    host:      mail.gmx.com
-    username:  cyclulk@gmx.fr
-    password:  Hydres756411
-    port:      587
-    encryption: tls
+    host:      mongo.planethoster.net
+    username:  administrateur@zhongfu.eu
+    password:  associa2016
+    port:      465
+    encryption: ssl
 
 #enable intl extensions
 services:

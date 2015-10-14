@@ -5,7 +5,7 @@ namespace Zhongfu\BlogBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Zhongfu\BlogBundle\Form\SendEmailContactType;
 use Zhongfu\BlogBundle\Entity\SendEmailContact;
 
@@ -82,30 +82,11 @@ class IncludesController extends Controller
     /**
      * @Template()
      */
-    public function contactAction(Request $request = null)
+    public function contactAction()
     {
         $oSendEmailContact = new SendEmailContact();
         $oForm = $this->createForm(new SendEmailContactType(), $oSendEmailContact);
 
-        if ($request != null) {
-            if ($request->getMethod() == 'POST') {
-                $oForm->handleRequest($request);
-
-                if ($oForm->isValid()) {
-
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject($oSendEmailContact->getSubject())
-                        ->setFrom($oSendEmailContact->getEmail())
-                        ->setTo('cyclulk@gmx.fr')
-                        ->setBody($oSendEmailContact->getContent());
-                    ;
-                    $this->get('mailer')->send($message);
-
-                    unset($oForm);
-                    return $this->redirect($this->generateUrl('_homepage'));
-                }
-            }
-        }
 
         $aContacts = $this->getDoctrine()->getManager()->getRepository('ZhongfuBlogBundle:Contact')->findAll();
         return ['contacts' => $aContacts, 'form' => $oForm->createView()];
@@ -114,7 +95,7 @@ class IncludesController extends Controller
     /**
      * @Template()
      */
-    public function coursAction(Request $request = null)
+    public function coursAction()
     {
         return [];
     }
