@@ -3,6 +3,7 @@
 {% block title %}{{ article.titre }}{% endblock %}
 
             {% block post %}
+              <article>
               <h2>{{ article.titre }}</h2>
 
               <!-- start single stuff post -->
@@ -12,7 +13,7 @@
                   <span class="stuff_date">{{ article.date|localizeddate('medium', 'none', global_locale ) }}</span>
 
                   <h2>{{ article.slug }}</h2>
-                  <img class="img-center" src="{{ asset(article.avatar.url) }}" alt="{{ article.avatar.name }}">
+                  <img style="margin-top: 30px" class="img-center" src="{{ asset(article.avatar.url) }}" alt="{{ article.avatar.name }}">
 
                   {{ article.contenu|raw }}
 
@@ -42,6 +43,7 @@
                   {#</div>#}
                 </div>
               </div>
+              </article>
               <!-- End single stuff post -->
             {% endblock post %}
 
