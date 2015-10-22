@@ -1,21 +1,44 @@
 {% extends "ZhongfuBlogBundle::onePostDisposition.html.twig" %}
 
-{% block title %}{{ article.titre }}{% endblock %}
+{% block metadescription %}{{ article.slug }}{% endblock metadescription%}
+
+{% block meta %}
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ article.titre }}" />
+  <meta property="og:description" content="{{ article.slug }}" />
+  <meta property="og:url" content="{{ app.request.uri }}" />
+  <meta property="og:site_name" content="Zhongfu.eu" />
+  <meta property="article:section" content="{{ article.type.name }}" />
+  <meta property="article:published_time" content="{{ article.date|date('Y-m-d')}}" />
+  <meta property="og:image" content="{{ app.request.uriForPath(asset(article.avatar.url)) }}" />
+  <meta property="og:image:url" content="{{ app.request.uriForPath(asset(article.avatar.url)) }}" />
+  {% for image in article.imagesList %}
+    {% if image != article.avatar %}
+      <meta property="og:image" content="{{ app.request.uriForPath(asset(image.url)) }}" />
+      <meta property="og:image:url" content="{{ app.request.uriForPath(asset(image.url)) }}" />
+    {% endif %}
+  {% endfor %}
+
+{% endblock meta %}
+
+{% block title %}{{ article.type.name }} - {{ article.titre }} - Zhongfu.eu{% endblock %}
 
             {% block post %}
-              <article>
-              <h2>{{ article.titre }}</h2>
+
+              <h1 itemprop="name">{{ article.titre }}</h1>
 
               <!-- start single stuff post -->
               <div class="singlepost_area">
-                <div class="singlepost_content">
-                  <a href="#" class="stuff_category">{{ article.type.name }}</a>
-                  <span class="stuff_date">{{ article.date|localizeddate('medium', 'none', global_locale ) }}</span>
+                <article itemscope itemtype="http://schema.org/Article" class="singlepost_content">
+                  <span href="#" itemprop="about" class="stuff_category">{{ article.type.name }}</span>
+                  <span itemprop="datePublished" class="stuff_date">{{ article.date|localizeddate('medium', 'none', global_locale ) }}</span>
 
-                  <h2>{{ article.slug }}</h2>
-                  <img style="margin-top: 30px" class="img-center" src="{{ asset(article.avatar.url) }}" alt="{{ article.avatar.name }}">
-
+                  <h2 itemprop="headline" >{{ article.slug }}</h2>
+                  <img  itemprop="image" style="margin-top: 30px" class="img-center" src="{{ asset(article.avatar.url) }}" alt="{{ article.avatar.name }}">
+                  <span itemprop="articleBody">
                   {{ article.contenu|raw }}
+                  </span>
 
                   <!-- single page pagination  -->
                   <div class="singlepage_pagination">
@@ -41,9 +64,9 @@
                   {#<p>Praticienne de Qi Gong</p>#}
                   {#</div>#}
                   {#</div>#}
-                </div>
+                </article>
               </div>
-              </article>
+
               <!-- End single stuff post -->
             {% endblock post %}
 
@@ -87,7 +110,7 @@
               {% if image != article.avatar %}
                 <li>
                   <div data-toggle="modal"
-                       data-target="#ImageModal{{ loop.index }}" class="featured_img"><img src="{{ asset(image.url) }}"
+                       data-target="#ImageModal{{ loop.index }}" class="featured_img"><img itemprop="image" src="{{ asset(image.url) }}"
                                                                                            alt="image.name"></div>
                   <div class="featured_title">
                     <a class="" href="#">{{ image.description }}</a>

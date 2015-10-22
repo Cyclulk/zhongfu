@@ -283,4 +283,9 @@ class Article
             return false;
         }
     }
+
+    public function getclass()
+    {
+        return 'article';
+    }
 }

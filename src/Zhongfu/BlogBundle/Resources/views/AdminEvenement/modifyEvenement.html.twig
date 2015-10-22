@@ -19,11 +19,11 @@
             </div>
             {{ form_widget(form.titre,{attr:{'size':'80'}}) }}
             <br>
-            {{ form_label(form.slug,"Slug de l'événement :") }}
+            {{ form_label(form.slug,"Slug de l'article entre 140 et 160 caractères conseillé (c´est la taille du champ pour repère)!! pour amélioré l´affichage dans google :") }}
             <div class="alert-danger">
                 {{ form_errors(form.slug) }}
             </div>
-            {{ form_widget(form.slug,{attr:{'size':'100'}}) }}
+            {{ form_widget(form.slug,{attr:{'size':'160'}}) }}
             <br>
             {{ form_label(form.date,"Date de l'événement :") }}
             <div class="alert-danger">

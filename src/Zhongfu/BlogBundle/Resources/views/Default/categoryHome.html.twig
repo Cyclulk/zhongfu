@@ -1,9 +1,14 @@
 {% extends "ZhongfuBlogBundle::homepageDisposition.html.twig" %}
+{% block metadescription %}Retrouvez toutes les informations, articles et événements sur la catégorie {{ category.name }} de l´association Zhongfu  {% endblock metadescription
 
-{% block title %}Association Zhong Fu{% endblock %}
+{% block title %}{{ category.name }} - Articles et événements - Zhongfu.eu{% endblock %}
 
 {% block banner %}
 {% endblock %}
+
+  {% block titrePage %}
+    <h1 style="text-align: center; font-style: italic; color: dimgray;">{{ category.name }}</h1>
+  {% endblock titrePage %}
 
  {% block leftbar %}
 
@@ -56,10 +61,13 @@
          <div class="middlebar_content_inner wow fadeInUp">
            <ul class="middlebar_nav">
              {% for postVedette in enVedettes %}
-             <li>
-               <a class="mbar_thubnail" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
-               <a class="mbar_title" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
-             </li>
+               {% if postVedette.class == 'evenement' %}
+                 <a class="mbar_thubnail" href="{{ path('_UniqueEvenement',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
+                 <a class="mbar_title" href="{{ path('_UniqueEvenement',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
+               {% else %}
+                 <a class="mbar_thubnail" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
+                 <a class="mbar_title" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
+               {% endif %}
                {% endfor %}
            </ul>
          </div>
@@ -99,10 +107,10 @@
         {% for evenement in evenements %}
         <li>
           <span class="stuff_date evenement-date">{{ evenement.date|localizeddate('full', 'none', global_locale ) }}</span>
-          <a class="featured_img" href="{{ path('_UniqueArticle',{'id':evenement.id,'category':evenement.type.url}) }}"><img src="{{ asset(evenement.avatar.url) }}" alt="img"></a>
+          <a class="featured_img" href="{{ path('_UniqueEvenement',{'id':evenement.id,'category':evenement.type.url}) }}"><img src="{{ asset(evenement.avatar.url) }}" alt="img"></a>
           <div class="featured_title">
             <a class="stuff_category" href="#">{{ evenement.type.name }}</a>
-            <a class="" href="{{ path('_UniqueArticle',{'id':evenement.id,'category':evenement.type.url}) }}"><h3>{{ evenement.titre }}</h3></a>
+            <a class="" href="{{ path('_UniqueEvenement',{'id':evenement.id,'category':evenement.type.url}) }}"><h3>{{ evenement.titre }}</h3></a>
             <p>{{ evenement.slug }}</p>
           </div>
         </li>

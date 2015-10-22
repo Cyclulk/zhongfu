@@ -331,4 +331,9 @@ class Evenement
         }
     }
 
+    public function getclass()
+    {
+        return 'evenement';
+    }
+
 }

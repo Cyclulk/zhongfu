@@ -1,6 +1,6 @@
 {% extends "ZhongfuBlogBundle::homepageDisposition.html.twig" %}
 
-{% block title %}Association Zhong Fu{% endblock %}
+{% block title %}Zhongfu.eu - Association ZhongFu Anglet - Tai chi chuan - Qi gong {% endblock %}
 
  {% block leftbar %}
 
@@ -42,8 +42,13 @@
            <ul class="middlebar_nav">
              {% for postVedette in enVedettes %}
              <li>
-               <a class="mbar_thubnail" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
-               <a class="mbar_title" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
+               {% if postVedette.class == 'evenement' %}
+               <a class="mbar_thubnail" href="{{ path('_UniqueEvenement',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
+               <a class="mbar_title" href="{{ path('_UniqueEvenement',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
+               {% else %}
+                 <a class="mbar_thubnail" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}"><img src="{{ asset(postVedette.avatar.url) }}" alt="img"></a>
+                 <a class="mbar_title" href="{{ path('_UniqueArticle',{'id':postVedette.id,'category':postVedette.type.url}) }}">{{ postVedette.titre }}</a>
+               {% endif %}
              </li>
                {% endfor %}
            </ul>

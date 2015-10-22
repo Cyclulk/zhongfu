@@ -1,10 +1,32 @@
 {% extends "ZhongfuBlogBundle::onePostDisposition.html.twig" %}
 
-{% block title %}{{ evenement.titre }}{% endblock %}
+{% block metadescription %}{{ evenement.slug }}{% endblock metadescription%}
+
+{% block meta %}
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ evenement.titre }}" />
+    <meta property="og:description" content="{{ evenement.slug }}" />
+    <meta property="og:url" content="{{ app.request.uri }}" />
+    <meta property="og:site_name" content="Zhongfu.eu" />
+    <meta property="article:section" content="{{ evenement.type.name }}" />
+    <meta property="article:published_time" content="{{ evenement.date|date('Y-m-d')}}" />
+    <meta property="og:image" content="{{ app.request.uriForPath(asset(evenement.avatar.url)) }}" />
+    <meta property="og:image:url" content="{{ app.request.uriForPath(asset(evenement.avatar.url)) }}" />
+    {% for image in evenement.imagesList %}
+        {% if image != evenement.avatar %}
+            <meta property="og:image" content="{{ app.request.uriForPath(asset(image.url)) }}" />
+            <meta property="og:image:url" content="{{ app.request.uriForPath(asset(image.url)) }}" />
+        {% endif %}
+    {% endfor %}
+
+{% endblock meta %}
+
+{% block title %}{{ evenement.type.name }} - {{ evenement.titre }} - Zhongfu.eu{% endblock %}
 
             {% block post %}
-                <article>
-                <h2>{{ evenement.titre }}</h2>
+
+                <h1>{{ evenement.titre }}</h1>
 
                 <!-- start single stuff post -->
                 <div class="singlepost_area">
@@ -48,7 +70,7 @@
                         {#</div>#}
                     </div>
                 </div>
-                </article>
+
                 <!-- End single stuff post -->
             {% endblock post %}
 
